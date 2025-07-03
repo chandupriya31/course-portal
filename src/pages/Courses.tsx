@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,11 +12,14 @@ import {
 } from "@/components/ui/select";
 import { Search, Filter, Star, Clock, Users, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import ContactForm from "@/components/ContactForm";
 
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("all");
+  const [contactFormOpen, setContactFormOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState("");
 
   const courses = [
     {
@@ -111,6 +113,11 @@ const Courses = () => {
     
     return matchesSearch && matchesCategory && matchesLevel;
   });
+
+  const handleEnrollClick = (courseName: string) => {
+    setSelectedCourse(courseName);
+    setContactFormOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -232,7 +239,10 @@ const Courses = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-black text-white hover:bg-gray-800">
+                <Button 
+                  className="w-full bg-black text-white hover:bg-gray-800"
+                  onClick={() => handleEnrollClick(course.title)}
+                >
                   Enroll Now
                 </Button>
               </CardContent>
@@ -257,6 +267,12 @@ const Courses = () => {
           </div>
         )}
       </div>
+
+      <ContactForm 
+        isOpen={contactFormOpen}
+        onClose={() => setContactFormOpen(false)}
+        courseName={selectedCourse}
+      />
     </div>
   );
 };
